@@ -1,0 +1,8 @@
+{
+  "node-version": "v0.5",
+  "name": "jawp-forwarder",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "2.2.0"
+  }
+}
