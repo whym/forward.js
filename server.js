@@ -1,1 +1,1 @@
-forward.js
+require("./forward");
