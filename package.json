@@ -1,7 +1,18 @@
 {
   "name": "forward.js",
+  "description": "simple HTTP forwarder",
   "version": "0.0.1",
   "dependencies": {
-    "express": "2.2.0"
-  }
+    "express": "2.2.0",
+    "supertest": "1.2.0",
+    "mocha": "2.4.5"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/whym/forward.js.git"
+  },
+  "license": "MIT"
 }
