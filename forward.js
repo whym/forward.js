@@ -1,26 +1,27 @@
-var express = require('express');
+const express = require('express');
 
-var forward = function(target, no_arg, port) {
+const forward = function(target, no_arg, port) {
 	port = port || 3000;
 
-	var app = express();
-	app.get(/.*/, function(req, res) {
-		var destination = no_arg ? target : target + req.url;
+	const app = express();
+	app.get(/.*/, (req, res) => {
+		const destination = no_arg ? target : target + req.url;
+		console.log(`From host "${req.get('HOST')}", path "${req.url}"`);
 		res.redirect(301, destination);
 	});
 
-	app.listen(port, function() {
+	app.listen(port, () => {
 		console.log('Listening on '+ port + ' forwarding to ' + target);
 	});
-	return {app: app};
+	return {'app': app};
 };
 
 if ( require.main === module ) {
 	forward(
 		process.env.FORWARD_TARGET || 'http://en.wikipedia.org/wiki',
-		process.env.NO_ARG ? true: false,
+		!!process.env.NO_ARG,
 		process.env.PORT
 	);
+} else {
+	module.exports = forward;
 }
-
-module.exports = forward;

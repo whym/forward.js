@@ -1,21 +1,23 @@
 {
-  "name": "forward.js",
-  "description": "simple HTTP forwarder",
-  "version": "0.0.1",
-  "dependencies": {
-    "express": "4.13.4",
-    "supertest": "1.2.0",
-    "mocha": "2.4.5"
-  },
-  "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test"
-  },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/whym/forward.js.git"
-  },
-  "engines": {
-    "node": "6.11.1"
-  },
-  "license": "MIT"
+    "name": "forward.js",
+    "description": "simple HTTP forwarder",
+    "version": "0.1.1",
+    "dependencies": {
+        "express": "^4.17.1"
+    },
+    "devDependencies": {
+        "mocha": "^8.2.1",
+        "supertest": "^6.0.1"
+    },
+    "scripts": {
+        "test": "mocha --exit"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/whym/forward.js.git"
+    },
+    "engines": {
+        "node": "14.14.0"
+    },
+    "license": "MIT"
 }
