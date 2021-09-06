@@ -1,7 +1,8 @@
+/* eslint-env node,mocha */
 const request = require('supertest');
 const forward = require('../forward');
 
-describe('/', () => {
+describe('forward.js', () => {
 	const app = forward('http://example.com').app;
 	it('redirects (301)', (done) => {
 		request(app)

@@ -1,13 +1,13 @@
 {
     "name": "forward.js",
     "description": "simple HTTP forwarder",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "dependencies": {
         "express": "^4.17.1"
     },
     "devDependencies": {
-        "mocha": "^8.2.1",
-        "supertest": "^6.0.1"
+        "mocha": "^8.4.0",
+        "supertest": "^6.1.6"
     },
     "scripts": {
         "test": "mocha --exit"
@@ -17,7 +17,7 @@
         "url": "https://github.com/whym/forward.js.git"
     },
     "engines": {
-        "node": "14.14.0"
+        "node": "14.x"
     },
     "license": "MIT"
 }
