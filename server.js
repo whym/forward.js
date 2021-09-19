@@ -1,11 +1,11 @@
 const server = (path) => {
 	path = path || './config.json';
 	const config = require(path);
-	return require('./forward')(config.target, !config.args, process.env.PORT);
+	return require('./dist/forward')(config.target, !config.args, process.env.PORT);
 };
 
 if ( require.main === module ) {
-	server();
+	server().listen();
 } else {
 	module.exports = server;
 }

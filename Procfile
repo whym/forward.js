@@ -1,1 +1,1 @@
-web: node forward.js
+web: node dist/forward.js

@@ -1,7 +1,10 @@
-const forward = (target, no_arg, port) => {
-	port = port || 3000;
+import express from 'express';
 
-	const express = require('express');
+class ForwardApp {
+	constructor(readonly app: Object, readonly listen: () => void) {}
+}
+
+function forward(target: string, no_arg: boolean, port = 3000): ForwardApp {
 	const app = express();
 	app.get(/.*/, (req, res) => {
 		const destination = no_arg ? target : target + req.url;
@@ -9,22 +12,22 @@ const forward = (target, no_arg, port) => {
 		res.redirect(301, destination);
 	});
 
-	return {
-		'app': app,
-		'listen': () => {
+	return new ForwardApp(
+		app,
+		() => {
 			app.listen(port, () => {
-				console.log('Listening on '+ port + ' forwarding to ' + target);
+				console.log(`Listening on ${port} forwarding to ${target}`);
 			});
-		}
-	};
-};
+		});
+}
 
 if ( require.main === module ) {
 	forward(
 		process.env.FORWARD_TARGET || 'http://en.wikipedia.org/wiki',
 		!!process.env.NO_ARG,
-		process.env.PORT
+		parseInt(process.env.PORT ?? '3000')
 	).listen();
 } else {
 	module.exports = forward;
 }
+export default forward;

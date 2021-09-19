@@ -6,6 +6,7 @@
 		"ecmaVersion": 8
 	},
 	"extends": [
-		"eslint:recommended"
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended"
 	]
 }
