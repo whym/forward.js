@@ -1,4 +1,4 @@
-HTTP redirector deployable as a heroku app.
+HTTP redirector deployable as a Fly app.
 
 Configuration
 --------------
