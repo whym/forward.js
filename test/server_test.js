@@ -11,4 +11,10 @@ describe('server.js', () => {
 			.expect(301);
   });
 
+  it('Sample config resolves into example2.com', async () => {
+    await requestWithSample.get('/test')
+			.set('Host', 'example.com')
+			.expect('Location', 'https://example2.com/test')
+			.expect(301);
+  });
 });

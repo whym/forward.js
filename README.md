@@ -5,11 +5,10 @@ Configuration
 
 Set environment variables:
 
-* ``FORWARD_TARGET`` - prefix for paths to be resolved with
+* ``FORWARD_CONFIG`` - main config (see below)
 * ``PORT`` - port number
-* ``NO_ARG`` - if set true, the redirector ignores paths. (By default it appends paths to ``FORWARD_TARGET``)
 
-or have ``config.json`` when running ``node server.js``. See ``config-sample.json`` for a sample.
+If ``config.json`` is present, it precedes over ``FORWARD_CONFIG``. See ``config-sample.json`` for a sample.
 
 Use
 ---

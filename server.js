@@ -1,7 +1,12 @@
 const server = (path) => {
 	path = path || './config.json';
-	const config = require(path);
-	return require('./dist/forward')(config.target, !config.args, process.env.PORT);
+	let config;
+	try {
+		config = require(path);
+	} catch (e) {
+		config = process.env.FORWARD_CONFIG;
+	}
+	return require('./dist/forward')(config, process.env.PORT);
 };
 
 if ( require.main === module ) {

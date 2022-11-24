@@ -1,1 +1,1 @@
-{"target": "https://en.wikipedia.org/wiki", "args": true}
+{"rules": {"example.com": "https://example2.com", "*": "https://en.wikipedia.org/wiki"}, "version": 1}
