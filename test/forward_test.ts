@@ -5,17 +5,36 @@ import { ForwardPattern } from '../forward_pattern';
 import assert from 'assert';
 
 describe('forward.ts', () => {
-	const app = forward({'rules': {'*': 'http://example.com'}}).app;
 	it('redirects (301)', (done) => {
+		const app = forward({'rules': {'*': 'http://example.com'}}).app;
 		request(app)
 			.get('/')
 			.expect('Content-Type', 'text/plain; charset=utf-8')
 			.expect(301, done);
 	});
+
 	it('redirects to http://example.com/poke given /poke', (done) => {
+		const app = forward({'rules': {'*': 'http://example.com'}}).app;
 		request(app)
 			.get('/poke')
 			.expect('Moved Permanently. Redirecting to http://example.com/poke')
+			.expect(301, done);
+	});
+});
+
+describe('forward with config-sample', () => {
+	const app = forward(require('../config-sample.json')).app;
+	it('redirects to English Wikipedia', (done) => {
+		request(app)
+			.get('/Dictionary')
+			.expect('Location', 'https://en.wikipedia.org/wiki/Dictionary')
+			.expect(301, done);
+	});
+	it('redirects to example2.com', (done) => {
+		request(app)
+			.get('/test')
+			.set('Host', 'example.com')
+			.expect('Location', 'https://example2.com/test')
 			.expect(301, done);
 	});
 });

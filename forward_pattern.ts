@@ -1,7 +1,7 @@
 export class ForwardPattern {
 	wildcarded: boolean;
 	domain: RegExp | string;
-	
+
 	constructor(readonly matcher: string, readonly replacement: string) {
 		if (matcher == '*') {
 			this.wildcarded = false;
@@ -32,8 +32,8 @@ export class ForwardPattern {
 	}
 
 	public toString(): string {
-    return `FP(${this.matcher}, ${this.replacement})`;
-  }
+		return `FP(${this.matcher}, ${this.replacement})`;
+	}
 
 	private join(u1: string, u2: string): string {
 		return u1 + u2;

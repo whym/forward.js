@@ -19,6 +19,7 @@
         "typescript": "^4.9.3"
     },
     "scripts": {
+        "start": "node dist/forward.js",
         "test": "tsc -b && mocha --exit --require ts-node/register",
         "postinstall": "tsc"
     },

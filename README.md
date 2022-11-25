@@ -13,7 +13,7 @@ If ``config.json`` is present, it precedes over ``FORWARD_CONFIG``. See ``config
 Use
 ---
 
-``npm install && PORT=3001 npm start``
+``npm ci && FORWARD_CONFIG='{rules: {"*": https://en.wikipedia.org}}' PORT=3001 npm start``
 
 Test
 -----

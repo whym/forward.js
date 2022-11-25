@@ -1,1 +1,1 @@
-web: node dist/forward.js
+web: npm start`

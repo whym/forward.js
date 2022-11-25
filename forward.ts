@@ -51,8 +51,15 @@ function _forward(patterns: ForwardPattern[], port = 3000): ForwardApp {
 }
 
 if ( require.main === module ) {
-	_forward(
-		[new ForwardPattern('*', 'http://en.wikipedia.org/wiki')],
+	let config;
+	try {
+		config = require('./config.json');
+	} catch (e) {
+		config = process.env.FORWARD_CONFIG;
+	}
+
+	forward_from_yaml(
+		config,
 		parseInt(process.env.PORT ?? '3000')
 	).listen();
 } else {
