@@ -1,7 +1,7 @@
 {
     "name": "forward.js",
     "description": "simple HTTP forwarder",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "dependencies": {
         "express": "^4.17.14",
         "yaml": "^2.1.3"

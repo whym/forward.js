@@ -1,13 +1,13 @@
-# fly.toml file generated for code-whym-org on 2022-11-09T14:40:39+09:00
+# fly.toml file generated for forward-js on 2022-11-25T21:49:42+09:00
 
-app = "code-whym-org"
+app = "forward-js"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
 [env]
-  PORT = "8080"
   NODE_ENV = "development"
+  PORT = "8080"
 
 [experimental]
   allowed_public_ports = []
