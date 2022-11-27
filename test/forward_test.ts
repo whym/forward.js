@@ -22,6 +22,20 @@ describe('forward.ts', () => {
 	});
 });
 
+describe('forward with empty config', () => {
+	const app = forward({'rules': {}}).app;
+	it('gives 503 to /', (done) => {
+		request(app)
+			.get('/')
+			.expect(503, done);
+	});
+	it('gives 503 to /foo', (done) => {
+		request(app)
+			.get('/foo')
+			.expect(503, done);
+	});
+});
+
 describe('forward with config-sample', () => {
 	const app = forward(require('../config-sample.json')).app;
 	it('redirects to English Wikipedia', (done) => {
@@ -67,6 +81,17 @@ describe('ForwardPattern', () => {
 	it('replaces everything retaining path', () => {
 		const pattern = new ForwardPattern('*', 'https://example.com');
 		assert.equal(pattern.resolve('example3.com', '/test'), 'https://example.com/test');
+	});
+
+	it('cannot resolve when matcher contains 2 slashes', () => {
+		const pattern = new ForwardPattern('example1.com/first/', 'https://example2.com/second');
+		assert.equal(pattern.resolve('example1.com', '/first'), null);
+	});
+
+	it('cannot resolve when host is null or undefined', () => {
+		const pattern = new ForwardPattern('example1.com', 'https://example2.com/root');
+		assert.equal(pattern.resolve(null, '/my-path'), null);
+		assert.equal(pattern.resolve(undefined, '/my-path'), null);
 	});
 
 	it('replaces domain but not parameter containing https://', () => {

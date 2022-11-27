@@ -21,7 +21,10 @@ export class ForwardPattern {
 		}
 	}
 
-	public resolve(host: string, path: string): string | null {
+	public resolve(host: string | null | undefined, path: string): string | null {
+		if (host === null || host === undefined) {
+			return null;
+		}
 		if (!this.wildcarded && host.match(this.domain)) {
 			return this.join(this.replacement, path);
 		} else if (this.wildcarded && host.match(this.domain)) {
