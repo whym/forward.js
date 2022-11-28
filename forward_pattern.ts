@@ -1,23 +1,23 @@
 export class ForwardPattern {
-	wildcarded: boolean;
-	domain: RegExp | string;
+	private readonly ignore_path: boolean;
+	private readonly domain: RegExp | string;
 
 	constructor(readonly matcher: string, readonly replacement: string) {
 		if (matcher == '*') {
-			this.wildcarded = false;
-			this.domain = new RegExp('.*');
+			this.ignore_path = false;
+			this.domain = /.*/;
 		} else if (matcher == ('*/*')) {
-			this.wildcarded = true;
-			this.domain = new RegExp('.*');
+			this.ignore_path = true;
+			this.domain = /.*/;
 		} else if (matcher.endsWith('/*')) {
-			this.wildcarded = true;
-			this.domain = matcher.substr(0, matcher.length - 2);
+			this.ignore_path = true;
+			this.domain = matcher.slice(0, -2);
 		} else if (matcher.endsWith('/')) {
-			this.wildcarded = false;
-			this.domain = matcher.substr(0, matcher.length - 1);
+			this.ignore_path = false;
+			this.domain = matcher.slice(0, -1);
 		} else {
 			this.domain = matcher;
-			this.wildcarded = false;
+			this.ignore_path = false;
 		}
 	}
 
@@ -25,17 +25,17 @@ export class ForwardPattern {
 		if (host === null || host === undefined) {
 			return null;
 		}
-		if (!this.wildcarded && host.match(this.domain)) {
-			return this.join(this.replacement, path);
-		} else if (this.wildcarded && host.match(this.domain)) {
+		if (this.ignore_path && host.match(this.domain)) {
 			return this.replacement;
+		} else if (host.match(this.domain)) {
+			return this.join(this.replacement, path);
 		} else {
 			return null;
 		}
 	}
 
 	public toString(): string {
-		return `FP(${this.matcher}, ${this.replacement})`;
+		return `(${this.matcher} -> ${this.replacement})`;
 	}
 
 	private join(u1: string, u2: string): string {

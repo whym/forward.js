@@ -48,7 +48,7 @@ function _forward(patterns: ForwardPattern[], port = 3000): ForwardApp {
 		app,
 		() => {
 			app.listen(port, () => {
-				console.log(`Listening on ${port}; using ${patterns.join()}`);
+				console.log(`Listening on ${port}; ${process.env.NODE_ENV}; using [${patterns.join()}]`);
 			});
 		});
 }

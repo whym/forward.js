@@ -1,4 +1,4 @@
-/* eslint-env node,mocha */
+/* eslint-env node,es6,mocha */
 import request from 'supertest';
 import forward from '../forward';
 import { ForwardPattern } from '../forward_pattern';
@@ -101,6 +101,6 @@ describe('ForwardPattern', () => {
 
 	it('has string repsentation', () => {
 		const pattern = new ForwardPattern('example1.com', 'https://example2.com');
-		assert.equal(`${pattern}`, 'FP(example1.com, https://example2.com)');
+		assert.equal(`${pattern}`, '(example1.com -> https://example2.com)');
 	});
 });

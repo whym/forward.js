@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /usr/src/app
 COPY package*.json tsconfig.json ./
