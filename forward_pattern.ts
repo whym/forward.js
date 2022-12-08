@@ -19,6 +19,7 @@ export class ForwardPattern {
 			this.domain = matcher;
 			this.ignore_path = false;
 		}
+		ForwardPattern.validate_url(this.replacement);
 	}
 
 	public resolve(host: string | null | undefined, path: string): string | null {
@@ -28,7 +29,7 @@ export class ForwardPattern {
 		if (this.ignore_path && host.match(this.domain)) {
 			return this.replacement;
 		} else if (host.match(this.domain)) {
-			return this.join(this.replacement, path);
+			return ForwardPattern.join(this.replacement, path);
 		} else {
 			return null;
 		}
@@ -38,7 +39,15 @@ export class ForwardPattern {
 		return `(${this.matcher} -> ${this.replacement})`;
 	}
 
-	private join(u1: string, u2: string): string {
+	static join(u1: string, u2: string): string {
 		return u1 + u2;
+	}
+
+	static validate_url(u: string): boolean {
+		if (!u.startsWith('https://') && !u.startsWith('http://')) {
+			console.error('URL should start with https:// or http://');
+			return false;
+		}
+		return true;
 	}
 }
