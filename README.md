@@ -3,7 +3,7 @@ HTTP redirector deployable as a Fly app.
 Configuration
 --------------
 
-Set environment variables:
+Configuration is done using environment variables (and optionally using a file).
 
 * ``FORWARD_CONFIG`` - main config (see below)
 * ``PORT`` - port number

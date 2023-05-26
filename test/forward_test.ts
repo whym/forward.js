@@ -1,5 +1,6 @@
 /* eslint-env node,es6,mocha */
 import request from 'supertest';
+import assert from 'assert';
 import forward from '../forward';
 
 describe('forward.ts', () => {
@@ -31,6 +32,17 @@ describe('forward with empty config', () => {
 		request(app)
 			.get('/foo')
 			.expect(503, done);
+	});
+});
+
+describe('forward with header', () => {
+	const app = forward({'rules': {'*': 'http://example.com'}}).app;
+	it(' set header ', (done) => {
+		request(app)
+			.get('/')
+		  .set('Accept', 'application/xml')
+			.expect('Content-Type', 'text/plain; charset=utf-8')
+			.expect(301, done);
 	});
 });
 
