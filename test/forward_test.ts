@@ -1,7 +1,7 @@
 /* eslint-env node,es6,mocha */
 import request from 'supertest';
-import assert from 'assert';
 import forward from '../forward';
+import { readFile } from 'fs/promises';
 
 describe('forward.ts', () => {
 	it('redirects (301)', (done) => {
@@ -35,19 +35,38 @@ describe('forward with empty config', () => {
 	});
 });
 
+describe('forward with broken string config', () => {
+	const app = forward('this_is_broken').app;
+	it('gives 503 to /', (done) => {
+		request(app)
+			.get('/')
+			.expect(503, done);
+	});
+});
+
+describe('forward with broken yaml config', () => {
+	const app = forward('{"this_is_broken": 1}').app;
+	it('gives 503 to /anything', (done) => {
+		request(app)
+			.get('/anything')
+			.expect(503, done);
+	});
+});
+
 describe('forward with header', () => {
 	const app = forward({'rules': {'*': 'http://example.com'}}).app;
 	it(' set header ', (done) => {
 		request(app)
 			.get('/')
-		  .set('Accept', 'application/xml')
+			.set('Accept', 'text/plain')
 			.expect('Content-Type', 'text/plain; charset=utf-8')
 			.expect(301, done);
 	});
 });
 
-describe('forward with config-sample', () => {
-	const app = forward(require('../config-sample.json')).app;
+describe('forward with config-sample', async () => {
+	const config_sample = await readFile('../config-sample.json', 'utf8');
+	const app = forward(config_sample).app;
 	it('redirects to English Wikipedia', (done) => {
 		request(app)
 			.get('/Dictionary')

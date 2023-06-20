@@ -8,6 +8,8 @@ class ForwardApp {
 	constructor(readonly app: unknown, readonly listen: () => void) {}
 }
 
+const FALLBACK_CONFIG = {'rules': {}};
+
 export default function forward_from_yaml(yaml: string | ConfigObject, port = 3000): ForwardApp {
 	let parsed: ConfigObject;
 	if (typeof(yaml) === 'string') {
@@ -15,19 +17,25 @@ export default function forward_from_yaml(yaml: string | ConfigObject, port = 30
 	} else {
 		parsed = yaml;
 	}
-	_check_syntax(parsed);
-	const patterns = Object.entries(parsed.rules).map((x) =>
-		new ForwardPattern(x[0], x[1]));
+
+	if (!_is_valid_syntax(parsed)) {
+		parsed = FALLBACK_CONFIG;
+	}
+
+	const patterns = Object.entries(parsed.rules).map(([k,v]) =>
+		new ForwardPattern(k, v));
 	return _forward(patterns, port);
 }
 
-function _check_syntax(parsed: ConfigObject) {
+function _is_valid_syntax(parsed: ConfigObject) {
 	if (!parsed.rules) {
 		console.error('config should contain "rules":', parsed);
-	}
-	if (Object.keys(parsed.rules).length === 0) {
+		return false;
+	} else if (Object.keys(parsed.rules).length === 0) {
 		console.error('config should not be empty:', parsed);
+		return false;
 	}
+	return true;
 }
 
 function _forward(patterns: ForwardPattern[], port = 3000): ForwardApp {
@@ -58,7 +66,7 @@ if ( require.main === module ) {
 	try {
 		config = require('./config.json');
 	} catch (e) {
-		config = process.env.FORWARD_CONFIG || {'rules': {}};
+		config = process.env.FORWARD_CONFIG || FALLBACK_CONFIG;
 	}
 
 	forward_from_yaml(
