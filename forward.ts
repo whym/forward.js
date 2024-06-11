@@ -5,7 +5,7 @@ import YAML from 'yaml';
 type ConfigObject = {rules: {[key: string]: string}};
 
 class ForwardApp {
-	constructor(readonly app: unknown, readonly listen: () => void) {}
+	constructor(readonly app: express.Express, readonly listen: () => void) {}
 }
 
 const FALLBACK_CONFIG = {'rules': {}};
