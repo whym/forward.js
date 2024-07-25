@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-FROM node:20-alpine
+USER node
+FROM docker.io/node:20-bookworm
 
 WORKDIR /usr/src/app
 COPY package*.json tsconfig.json ./
