@@ -62,7 +62,7 @@ function _forward(patterns: ForwardPattern[], port = 3000): ForwardApp {
 }
 
 if ( require.main === module ) {
-	let config;
+	let config: ConfigObject | string;
 	try {
 		config = require('./config.json');
 	} catch (e) {
