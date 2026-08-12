@@ -1,7 +1,7 @@
 /* eslint-env node,es6,mocha */
 import request from 'supertest';
-import forward from '../forward';
-import { readFile } from 'fs/promises';
+import forward from '../forward.js';
+import { readFile } from 'node:fs/promises';
 
 describe('forward.ts', () => {
 	it('redirects (301)', (done) => {
@@ -65,7 +65,7 @@ describe('forward with header', () => {
 });
 
 describe('forward with config-sample', async () => {
-	const config_sample = await readFile('../config-sample.json', 'utf8');
+	const config_sample = await readFile('config-sample.json', 'utf8');
 	const app = forward(config_sample).app;
 	it('redirects to English Wikipedia', (done) => {
 		void request(app)

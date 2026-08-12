@@ -1,6 +1,6 @@
 /* eslint-env node,es6,mocha */
-import { ForwardPattern } from '../forward_pattern';
-import assert from 'assert';
+import { ForwardPattern } from '../forward_pattern.js';
+import assert from 'node:assert';
 
 describe('ForwardPattern', () => {
 	it('replaces example1 with example2 retaining path', () => {

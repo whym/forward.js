@@ -1,5 +1,6 @@
 import express from 'express';
-import { ForwardPattern } from './forward_pattern';
+import { readFile } from 'node:fs/promises';
+import { ForwardPattern } from './forward_pattern.js';
 import YAML from 'yaml';
 
 type ConfigObject = {rules: {[key: string]: string}};
@@ -61,10 +62,12 @@ function _forward(patterns: ForwardPattern[], port = 3000): ForwardApp {
 		});
 }
 
-if ( require.main === module ) {
+if ( import.meta.main ) {
 	let config: ConfigObject | string;
 	try {
-		config = require('./config.json');
+		config = JSON.parse(
+			await readFile('./config.json', 'utf8')
+		);
 	} catch (e) {
 		config = process.env.FORWARD_CONFIG || FALLBACK_CONFIG;
 	}
@@ -73,6 +76,4 @@ if ( require.main === module ) {
 		config,
 		parseInt(process.env.PORT ?? '3000')
 	).listen();
-} else {
-	module.exports = forward_from_yaml;
 }
