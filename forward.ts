@@ -11,30 +11,32 @@ class ForwardApp {
 
 const FALLBACK_CONFIG: ConfigObject  = {'rules': {}};
 
-export default function forward_from_yaml(yaml: string | ConfigObject, port = 3000): ForwardApp {
-	let parsed: ConfigObject;
-	if (typeof(yaml) === 'string') {
-		parsed = YAML.parse(yaml);
-	} else {
-		parsed = yaml;
-	}
+export default function forward_from_yaml(yaml: object | string, port = 3000): ForwardApp {
+	const parsed =
+		typeof(yaml) === 'string' ?
+			YAML.parse(yaml) as object : yaml;
 
-	const validated = _is_valid_syntax(parsed) ? parsed : FALLBACK_CONFIG;
+	const validated: ConfigObject =
+		_is_valid_syntax(parsed) ?
+			parsed : FALLBACK_CONFIG;
 
 	const patterns = Object.entries(validated.rules).map(([k,v]) =>
 		new ForwardPattern(k, v));
 	return _forward(patterns, port);
 }
 
-function _is_valid_syntax(parsed: unknown): parsed is ConfigObject {
+function _is_valid_syntax(parsed: object): parsed is ConfigObject {
 	if (typeof parsed !== 'object' || parsed === null || !('rules' in parsed)) {
 		return false;
 	}
 
-	if (!parsed.rules) {
+	const obj = parsed as Record<string, unknown>;
+	if (!obj.rules || typeof obj.rules !== 'object' || obj.rules === null) {
 		console.error('config should contain "rules":', parsed);
 		return false;
-	} else if (Object.keys(parsed.rules).length === 0) {
+	}
+	const rules = obj.rules as Record<string, unknown>;
+	if (Object.keys(rules).length === 0) {
 		console.error('config should not be empty:', parsed);
 		return false;
 	}
@@ -64,16 +66,16 @@ function _forward(patterns: ForwardPattern[], port = 3000): ForwardApp {
 		});
 }
 
-async function readConfig(): Promise<ConfigObject | string> {
+async function readConfig(): Promise<object | string> {
 	try {
-		return JSON.parse(await readFile('./config.json', 'utf8'));
+		return JSON.parse(await readFile('./config.json', 'utf8')) as object;
 	} catch {
 		return process.env.FORWARD_CONFIG ?? FALLBACK_CONFIG;
 	}
 }
 
 if ( import.meta.main ) {
-	const config: ConfigObject | string = await readConfig();
+	const config = await readConfig();
 
 	forward_from_yaml(
 		config,
