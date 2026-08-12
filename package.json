@@ -3,20 +3,21 @@
     "description": "simple HTTP forwarder on node.js",
     "version": "0.2.2",
     "dependencies": {
-        "express": "^5.2.1",
+        "express": "^5.x",
         "yaml": "^2.4.5"
     },
     "devDependencies": {
-        "@types/express": "^5.0.6",
+        "@eslint/js": "^10.0.1",
+        "@types/express": "^5.x",
         "@types/mocha": "^10.0.10",
         "@types/supertest": "^6.0.2",
-        "@typescript-eslint/eslint-plugin": "^8.x",
-        "@typescript-eslint/parser": "^8.x",
-        "eslint": "^9.x",
+        "eslint": "^10.8.1",
+        "globals": "^17.10.0",
         "mocha": "^11.3.0",
         "supertest": "^7.0.0",
         "tsx": "^4.22.4",
-        "typescript": "^6.x"
+        "typescript": "^6.x",
+        "typescript-eslint": "^8.67.0"
     },
     "scripts": {
         "start": "node dist/forward.js",

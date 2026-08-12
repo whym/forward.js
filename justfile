@@ -3,6 +3,7 @@ app := "forward"
 check:
 	npm run typecheck
 	npm test
+	npx eslint
 	npm audit
 run:
 	npm install

@@ -9,7 +9,7 @@ class ForwardApp {
 	constructor(readonly app: express.Express, readonly listen: () => void) {}
 }
 
-const FALLBACK_CONFIG = {'rules': {}};
+const FALLBACK_CONFIG: ConfigObject  = {'rules': {}};
 
 export default function forward_from_yaml(yaml: string | ConfigObject, port = 3000): ForwardApp {
 	let parsed: ConfigObject;
@@ -19,16 +19,18 @@ export default function forward_from_yaml(yaml: string | ConfigObject, port = 30
 		parsed = yaml;
 	}
 
-	if (!_is_valid_syntax(parsed)) {
-		parsed = FALLBACK_CONFIG;
-	}
+	const validated = _is_valid_syntax(parsed) ? parsed : FALLBACK_CONFIG;
 
-	const patterns = Object.entries(parsed.rules).map(([k,v]) =>
+	const patterns = Object.entries(validated.rules).map(([k,v]) =>
 		new ForwardPattern(k, v));
 	return _forward(patterns, port);
 }
 
-function _is_valid_syntax(parsed: ConfigObject) {
+function _is_valid_syntax(parsed: unknown): parsed is ConfigObject {
+	if (typeof parsed !== 'object' || parsed === null || !('rules' in parsed)) {
+		return false;
+	}
+
 	if (!parsed.rules) {
 		console.error('config should contain "rules":', parsed);
 		return false;
@@ -62,15 +64,16 @@ function _forward(patterns: ForwardPattern[], port = 3000): ForwardApp {
 		});
 }
 
-if ( import.meta.main ) {
-	let config: ConfigObject | string;
+async function readConfig(): Promise<ConfigObject | string> {
 	try {
-		config = JSON.parse(
-			await readFile('./config.json', 'utf8')
-		);
-	} catch (e) {
-		config = process.env.FORWARD_CONFIG || FALLBACK_CONFIG;
+		return JSON.parse(await readFile('./config.json', 'utf8'));
+	} catch {
+		return process.env.FORWARD_CONFIG ?? FALLBACK_CONFIG;
 	}
+}
+
+if ( import.meta.main ) {
+	const config: ConfigObject | string = await readConfig();
 
 	forward_from_yaml(
 		config,

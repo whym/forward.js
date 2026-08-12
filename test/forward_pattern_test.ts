@@ -1,4 +1,3 @@
-/* eslint-env node,es6,mocha */
 import { ForwardPattern } from '../forward_pattern.js';
 import assert from 'node:assert';
 
@@ -50,7 +49,7 @@ describe('ForwardPattern', () => {
 
 	it('has string repsentation', () => {
 		const pattern = new ForwardPattern('example1.com', 'https://example2.com');
-		assert.equal(`${pattern}`, '(example1.com -> https://example2.com)');
+		assert.equal(pattern.toString(), '(example1.com -> https://example2.com)');
 	});
 
 	it('joins domain and path', () => {

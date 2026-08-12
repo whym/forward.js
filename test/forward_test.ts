@@ -1,6 +1,6 @@
-/* eslint-env node,es6,mocha */
 import request from 'supertest';
 import forward from '../forward.js';
+import { type Express } from 'express';
 import { readFile } from 'node:fs/promises';
 
 describe('forward.ts', () => {
@@ -64,9 +64,12 @@ describe('forward with header', () => {
 	});
 });
 
-describe('forward with config-sample', async () => {
-	const config_sample = await readFile('config-sample.json', 'utf8');
-	const app = forward(config_sample).app;
+describe('forward with config-sample', () => {
+	let app: Express;
+	before(async () => {
+		const config_sample = await readFile('config-sample.json', 'utf8');
+		app = forward(config_sample).app;
+	});
 	it('redirects to English Wikipedia', (done) => {
 		void request(app)
 			.get('/Dictionary')
